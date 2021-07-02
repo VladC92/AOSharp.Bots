@@ -37,6 +37,7 @@ namespace Reform
                 _stateMachine = new StateMachine(new IdleState());
 
                 Chat.RegisterCommand("reform", ReformCommand);
+                Chat.RegisterCommand("disband", DisbandCommand);
 
 
                 Team.TeamRequest += OnTeamRequest;
@@ -84,6 +85,25 @@ namespace Reform
                 IsLeader = true;
                 Chat.WriteLine("reforming...");
                 Start();
+            }
+            catch (Exception e)
+            {
+                Chat.WriteLine(e.Message);
+            }
+        }
+        private void DisbandCommand(string command, string[] param, ChatWindow chatWindow)
+        {
+            try
+            {
+
+                if (!Team.IsLeader)
+                {
+                    chatWindow.WriteLine("Only the team leader can disband team", ChatColor.Yellow);
+                    return;
+                }
+                IsLeader = true;
+                Chat.WriteLine("Disbanding...");
+                Team.Disband();
             }
             catch (Exception e)
             {
