@@ -27,6 +27,9 @@ namespace Reform
         public static bool Running = false;
         public static Identity Leader = Identity.None;
         public static bool IsLeader = false;
+        private List<Identity> foundPlayers = new List<Identity>();
+        private Identity[] _teamCache;
+
 
         public void Run(string pluginDir)
         {
@@ -38,6 +41,7 @@ namespace Reform
 
                 Chat.RegisterCommand("reform", ReformCommand);
                 Chat.RegisterCommand("disband", DisbandCommand);
+                Chat.RegisterCommand("inv", InviteCommand);
 
 
                 Team.TeamRequest += OnTeamRequest;
@@ -54,7 +58,7 @@ namespace Reform
             if (IsLeader)
                 _stateMachine.SetState(new ReformState());
         }
-        
+
 
         private void OnUpdate(object s, float deltaTime)
         {
@@ -104,6 +108,41 @@ namespace Reform
                 IsLeader = true;
                 Chat.WriteLine("Disbanding...");
                 Team.Disband();
+            }
+            catch (Exception e)
+            {
+                Chat.WriteLine(e.Message);
+            }
+        }
+        private void InvitePlayer(Identity player)
+        {
+            if (player == DynelManager.LocalPlayer.Identity || Team.Members.Any(j => j.Identity == player) || foundPlayers.Any(j => j == player))
+                return;
+
+            Team.Invite(player);
+            Chat.WriteLine($"Inviting {player}");
+
+            foundPlayers.Add(player);
+        }
+        private void InviteCommand(string command, string[] param, ChatWindow chatWindow)
+        {
+            try
+            {
+
+                foreach (SimpleChar player in DynelManager.Players)
+                {
+
+                    if (player.Name == "Ciobanprost" || player.Name == "Ciobanfaraoi" || player.Name == "Cioban" 
+
+                        || player.Name == "Evolutzion" || player.Name == "Xcentric" || player.Name == "Izzgimerr")
+
+                    {
+                        foundPlayers.Add(player.Identity);
+                        Team.Invite(player);
+                    }
+
+                }
+
             }
             catch (Exception e)
             {
