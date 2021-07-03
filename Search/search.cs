@@ -228,7 +228,7 @@ namespace Desu
                     {
                         if (isProf == true)
                         {
-                            if (p.Profession == prof && p.Side != Side.Clan)
+                            if (p.Profession == prof && p.Side != Side.Clan && p.Level > 218)
                             {
                                 Chat.WriteLine($"Found : " + p.Name, ChatColor.Gold);
                                 _playersToHighlight.Add(p.Name);
@@ -251,7 +251,7 @@ namespace Desu
                         }
                     }
                     if (_playersToHighlight.Count == 0)
-                        Chat.WriteLine($"Player {param[0]} not found", ChatColor.Yellow);
+                        Chat.WriteLine($"Player / Profession {param[0]} not found", ChatColor.Yellow);
                 }
             }
             catch (Exception e)
@@ -306,12 +306,12 @@ namespace Desu
                     (prof, isProf) = GetProf(name);
 
                     if (prof != Profession.Unknown)
-                        Chat.WriteLine($"Search for {prof.ToString()}", ChatColor.DarkPink);
+                        Chat.WriteLine($"Searching for {prof.ToString()}...", ChatColor.DarkPink);
                     foreach (SimpleChar p in DynelManager.Players)
                     {
                         if (isProf == true)
                         {
-                            if (p.Profession == prof && p.Side != Side.Clan)
+                            if (p.Profession == prof && p.Side != Side.Clan && p.Level > 218)
                             {
                                 Chat.WriteLine($"Found : " + p.Name, ChatColor.Gold);
                                 _playersToHighlight.Add(p.Name);
@@ -338,7 +338,7 @@ namespace Desu
                         }
                     }
                     if (_playersToHighlight.Count == 0)
-                        Chat.WriteLine($"Player {param[0]} not found", ChatColor.Yellow);
+                        Chat.WriteLine($"Player / Profession {param[0]} not found", ChatColor.Yellow);
                 }
             }
             catch (Exception e)
